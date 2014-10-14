@@ -16,7 +16,8 @@ int main(int argc, char** argv)
 		MPI_Recv (&msg, 1, MPI_INT, size-2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE) ;
 		msg += rank;
 		cout << "RANK:" << rank << " MSG: " << msg << endl; 
-	} else 	if(rank==0)
+	} 
+	else if(rank==0)
 	{
 		MPI_Send (&msg, 1, MPI_INT, rank+1, 0, MPI_COMM_WORLD);
 	}
@@ -25,9 +26,6 @@ int main(int argc, char** argv)
 		MPI_Recv (&msg, 1, MPI_INT, rank-1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE) ;
 		msg += rank;
 		MPI_Send (&msg, 1, MPI_INT, rank+1, 0, MPI_COMM_WORLD);
-	} else {
-
-		cot<<"ala";
 	}
 	MPI_Finalize();
 }
