@@ -17,13 +17,20 @@ int main(int argc, char** argv)
 {
 	MPI_Init(&argc, &argv);
 	srand(time(NULL));
-	int rank, nRank, size, *tab = NULL, *nTab = NULL, n = atoi(argv[1]);
+	int rank, nRank, size, *tab = NULL, *nTab = NULL;
 	int maxG, maxL;
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	if(argc != 2)
+	{
+		if(rank == 0)
+			cerr << "Podaj n.." << endl;
+		MPI_Finalize();
+		return(EXIT_FAILURE);
+	}
+	int n = atoi(argv[1]);
 	if(rank == 0)
 	{
-		
 		bool niepodzielne = false;
 		tab = new int[n];
 		for(int i=0; i<n; i++)
