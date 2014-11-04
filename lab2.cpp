@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int max(int*& tab, int n)
+int max(int*& tab, int n) //FUNKCJA MAX
 {
 	int max = tab[0];
 	for(int i=1; i<n; ++i)
@@ -27,9 +27,9 @@ int main(int argc, char** argv)
 			cerr << "Podaj n.." << endl;
 		MPI_Finalize();
 		return(EXIT_FAILURE);
-	}
-	int n = atoi(argv[1]);
-	if(rank == 0)
+	} // spr argumentu wejsciowego
+	int n = atoi(argv[1]); // pobranie n
+	if(rank == 0) // zadania dla procesu nr 0
 	{
 		bool niepodzielne = false;
 		tab = new int[n];
@@ -38,53 +38,55 @@ int main(int argc, char** argv)
 			tab[i] = rand() % 100;
 		}
 		cout << endl;
-		int rozmiarBloku = (int) (n/size);
-		if(n % size != 0)
+		int rozmiarBloku = (int) (n/size); //wstepny rozmiar bloku
+		if(n % size != 0) //jak niepodzielne dodaje j do rozmiaru bloku
 		{
 			rozmiarBloku += 1;
 			niepodzielne = true;
 		}
-		for(int i=0; i<size; ++i)
+		for(int i=0; i<size; ++i) //petla po wszystkich procesach
 		{
 			int k;
-			int dolna = i * rozmiarBloku;
-			int gorna = ((i+1) * rozmiarBloku) - 1;
-			if(i == size-1 && niepodzielne)
+			int dolna = i * rozmiarBloku; //dolna granica i * rozmiarBloku (ex. rB = 10) to 
+						      //dla i=0 bedzie dolna = 0 i gorna = 9 itd
+			int gorna = ((i+1) * rozmiarBloku) - 1; //jw
+			if(i == size-1 && niepodzielne) // jak ostatnia porcja i niepodzielne to gorna = ostatni element
 			{
 				gorna = n-1;
 			}
 			nTab = new int[gorna-dolna];
-			for(k=dolna, nRank=0; k<=gorna; k++, nRank++)
+			for(k=dolna, nRank=0; k<=gorna; k++, nRank++) // tworzenie czesci wg granic wyzej
 			{
 				nTab[nRank] = tab[k];
 			}
 			// cout << "Czesc " << i << " od " << dolna << " do " << gorna << " Rozmiar: " << nRank << endl;
-			if(i == 0)
+			if(i == 0) // proces 0 sobie od razu liczy bez wysylania nigdzie
 			{
 				maxL = max(nTab, nRank);
 				cout << "Czesc: " << i << " Rozmiar: " << nRank << " Max lokalny: " << maxL << endl; 
 			}
-			else
+			else //do innych procesow trzeba wyslac rozmiar czesci sama czesc
 			{
 				MPI_Send(&nRank, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
 				MPI_Send(nTab, nRank, MPI_INT, i, 0, MPI_COMM_WORLD);
 			}
 		}
 	}
-	else
+	else //robota dla innych procesow
 	{
-		MPI_Recv(&nRank, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		nTab = new int[nRank];
-		MPI_Recv(nTab, nRank, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		maxL = max(nTab, nRank);
+		MPI_Recv(&nRank, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE); //odebrac rozmiar czesc
+		nTab = new int[nRank]; //zaalokowac pamiec
+		MPI_Recv(nTab, nRank, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE); //odebrac czesc
+		maxL = max(nTab, nRank); //policzyc maxa
 		cout << "Czesc: " << rank << " Rozmiar: " << nRank << " Max lokalny: " << maxL << endl; 
 	}
 	
-	MPI_Reduce(&maxL, &maxG, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
-	if(rank == 0)
+	MPI_Reduce(&maxL, &maxG, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD); //policzenie maxa globalnego z wszystkich czesci
+	if(rank == 0) //wyswietlenie go raz nie tyle razy ile procesow
 		cout << endl << "Maksimum globalne wynosi " << maxG << endl;
 	
-	if(tab)
+	//ZWALNIANIE PAMIECI
+	if(tab) 
 		delete[] tab;
 	if(nTab)
 		delete[] nTab;
