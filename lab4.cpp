@@ -14,8 +14,6 @@ int main(int argc, char** argv)
 	MPI_Comm parzysty, nieparzysty;
 	MPI_Comm_group(MPI_COMM_WORLD, &wszystkie);
 	
-	//int parzyste = rank % 2;
-	//MPI_Comm_split(MPI_COMM_WORLD, parzyste, rank, &nowy);
 	if(size % 2 == 0)
 		n = (int) (size/2);
 	else
