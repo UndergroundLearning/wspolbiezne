@@ -50,42 +50,5 @@ int main(int argc, char** argv)
 			cout << sumaN << endl;
 	}
 	delete[] ranks;
-	// MPI_Comm_group(MPI_COMM_WORLD, &wszystkie);
-	// if (rank % 2 == 0) 
-	// {
-	// 	MPI_Group_incl(wszystkie, n, ranks, &parzyste);
- //  	}
- //  	MPI_Group_difference(wszystkie, parzyste, &nieparzyste);
- //  	MPI_Group_rank(parzyste, &sumaP);
- //  	cout << sumaP << endl;
-/* Create new new communicator and then perform collective communications */
-// MPI_Comm_create(MPI_COMM_WORLD, new_group, &new_comm);
-// MPI_Allreduce(&sendbuf, &recvbuf, 1, MPI_INT, MPI_SUM, new_comm);
-
-// MPI_Group_rank (new_group, &new_rank);
-// printf("rank= %d newrank= %d recvbuf= %d\n",rank,new_rank,recvbuf);
-
-	
-	
-
-	// MPI_Comm_group(MPI_COMM_WORLD, &wszystkie);
-	// MPI_Group_incl(wszystkie, n, ranks, &parzyste);
-	// MPI_Group_difference(wszystkie, parzyste, &nieparzyste);
-	
-	// int rankL;
-	// MPI_Comm_rank(parzysty, &rankL);
-	// cout << rankL << endl;
-
-	// int rankP, rankN, sizeP, sizeN;
-	// MPI_Comm_rank(parzysty, &rankP);
-	// MPI_Comm_size(parzysty, &sizeP);
-	// MPI_Comm_rank(nieparzysty, &rankN);
-	// MPI_Comm_size(nieparzysty, &sizeN);
-	// MPI_Allreduce(&rankP, &sumaP, 1, MPI_INT, MPI_SUM, parzysty);
-	// MPI_Allreduce(&rankN, &sumaN, 1, MPI_INT, MPI_SUM, nieparzysty);
-	// if(rankP == sizeP-1)
-	// 	cout << "Suma nieparzystych: " << sumaN << endl;
-	// if(rankN == sizeN -1)
-	// 	cout << "Suma parzystych: " << sumaP << endl;
 	MPI_Finalize();
 }
