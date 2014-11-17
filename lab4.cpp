@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 		MPI_Comm_size(parzysty, &sizeL);
 		MPI_Allreduce(&rank, &sumaP, 1, MPI_INT, MPI_SUM, parzysty);
 		if(rankL == sizeL-1)
-			cout << sumaP << endl;
+			cout << "SUMA PARZYSTYCH: " << sumaP << endl;
 	}
 	else
 	{
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 		MPI_Comm_size(nieparzysty, &sizeL);
 		MPI_Allreduce(&rank, &sumaN, 1, MPI_INT, MPI_SUM, nieparzysty);
 		if(rankL == sizeL-1)
-			cout << sumaN << endl;
+			cout << "SUMA NIEPARZYSTCH: " << sumaN << endl;
 	}
 	delete[] ranks;
 	MPI_Finalize();
