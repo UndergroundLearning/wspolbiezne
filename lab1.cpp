@@ -9,8 +9,6 @@ int main(int argc, char** argv)
 	MPI_Init(&argc, &argv );
 	MPI_Comm_rank( MPI_COMM_WORLD, &rank );
 	MPI_Comm_size( MPI_COMM_WORLD, &size );
-	
-  //jestem patolem
 	if(rank == size-1)
 	{
 		MPI_Recv (&msg, 1, MPI_INT, size-2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE) ;
