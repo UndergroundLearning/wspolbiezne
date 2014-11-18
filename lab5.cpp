@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 {
 	MPI_Init(&argc, &argv);
 	srand(time(NULL));
-	int size, rank, rankL, size1, size2, *tab, rozmiar, rozmiarCzesci, *tabL, maxL, maxG, minG;
+	int size, rank, rankL, size1, size2, *tab = NULL, rozmiar, rozmiarCzesci, *tabL = NULL, maxL, maxG, minG;
 	int master, masterG1, masterG2, masters[3];
 	MPI_Group wszystkie, workG1, workG2, mastersG;
 	MPI_Comm COMM_workG1, COMM_workG2, COMM_mastersG;
@@ -116,6 +116,10 @@ int main(int argc, char** argv)
 		MPI_Recv(&minG, 1, MPI_INT, 2, 0, COMM_mastersG, MPI_STATUS_IGNORE);
 		cout << "MIN: " << minG << ", MAX: " << maxG << endl;
 	}
+	if(tab != NULL)
+		delete[] tab;
+	if(tabL != NULL)
+		delete[] tabL;
 	MPI_Finalize();
 	return 0;
 }
