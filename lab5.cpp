@@ -116,7 +116,6 @@ int main(int argc, char** argv)
 		MPI_Recv(&minG, 1, MPI_INT, 2, 0, COMM_mastersG, MPI_STATUS_IGNORE);
 		cout << "MIN: " << minG << ", MAX: " << maxG << endl;
 	}
-	delete[] tab; delete[] tabL;
 	MPI_Finalize();
 	return 0;
 }
