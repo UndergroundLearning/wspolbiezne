@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	}
 	MPI_Bcast(&nRank, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	nTab = new int[nRank];
-	MPI_Scatter(tab, nRank, MPI_INT, nTab, nRank, MPI_INT, 0, MPI_COMM_WORLD);
+	MPI_Scatter(tab, nRank, MPI_INT, nTab, nRank, MPI_INT, 0, MPI_COMM_WORLD); //wysyła do wszystkich procesów tab i odbiera nTab
 	maxL = max(nTab, nRank);
 	MPI_Reduce(&maxL, &maxG, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD); //policzenie maxa globalnego z wszystkich czesci
 	if(rank == 0) //wyswietlenie go raz nie tyle razy ile procesow
